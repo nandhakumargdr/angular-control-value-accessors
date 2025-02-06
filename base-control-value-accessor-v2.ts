@@ -19,13 +19,6 @@ export abstract class BaseControlValueAccessorV2<T> implements ControlValueAcces
     }
   }
 
-  afterContentInit() {
-    let formControl = this.ngControl?.control as FormControl;
-    if (formControl) {
-      this.formControl = this.ngControl?.control as FormControl;
-    }
-  }
-
   initFormControl() {
     let formControl = this.ngControl?.control as FormControl;
     if (formControl) {
@@ -44,11 +37,22 @@ export abstract class BaseControlValueAccessorV2<T> implements ControlValueAcces
   };
 
   writeValue(value: T): void {
-    if (value != this.formControl.value) {
-      this.actualValue = value;
-      this.controlValue.set(value);
-      this.onValueReady(value);
-    }
+    // if (value !== null && value !== undefined && !this.writeToInherited) {
+    //   this.controlValue.set(value);
+    //   this.onValueReady(value);
+    //   this.writeToInherited = true;
+    // }
+
+    // if (value !== null && value !== undefined) {
+    //   this.actualValue = value;
+    //   this.controlValue.set(value);
+    //   this.onValueReady(value);
+    //   this.writeToInherited = true;
+    // }
+
+    this.actualValue = value;
+    this.controlValue.set(value);
+    this.onValueReady(value);
   }
 
   createInstance<T>(ClassRef: new () => T): T {
@@ -93,6 +97,7 @@ export abstract class BaseControlValueAccessorV2<T> implements ControlValueAcces
     this.controlValue.set(newValue);
     this.onChange(newValue);
   }
+
 }
 
 
